@@ -13,6 +13,7 @@ typedef void (^JCTagListViewBlock)(NSInteger index);
 @interface JCTagListView : UIView
 
 @property (nonatomic, strong) UIColor *tagStrokeColor;// default: lightGrayColor
+@property (nonatomic, strong) UIColor *tagSelectedStrokeColor;// default: lightGrayColor
 @property (nonatomic, strong) UIColor *tagTextColor;// default: darkGrayColor
 @property (nonatomic, strong) UIColor *tagSelectedTextColor;// default: darkGrayColor
 @property (nonatomic, strong) UIColor *tagBackgroundColor;// default: clearColor
@@ -20,6 +21,7 @@ typedef void (^JCTagListViewBlock)(NSInteger index);
 
 @property (nonatomic, strong) UIFont *tagTextFont;// default: [UIFont systemFontOfSize:14.0f]
 
+@property (nonatomic, assign) CGFloat tagStrokeWidth; // default: 1
 @property (nonatomic, assign) CGFloat tagCornerRadius;// default: 10
 @property (nonatomic, assign) BOOL canSelectTags;// default: NO
 
@@ -27,7 +29,6 @@ typedef void (^JCTagListViewBlock)(NSInteger index);
 @property (nonatomic, strong) NSMutableArray *selectedTags;
 
 @property (nonatomic, strong) UICollectionView *collectionView;
-@property (nonatomic, strong) UIFont *font;
 
 - (void)setCompletionBlockWithSelected:(JCTagListViewBlock)completionBlock;
 

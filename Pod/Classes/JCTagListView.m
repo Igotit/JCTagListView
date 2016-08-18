@@ -51,12 +51,14 @@ static NSString * const reuseIdentifier = @"tagListViewItemId";
     _tags = [NSMutableArray array];
     
     _tagStrokeColor = [UIColor lightGrayColor];
+    _tagSelectedStrokeColor = [UIColor lightGrayColor];
     _tagBackgroundColor = [UIColor clearColor];
     _tagTextColor = [UIColor darkGrayColor];
     _tagSelectedTextColor = [UIColor darkGrayColor];
     _tagSelectedBackgroundColor = [UIColor colorWithRed:217/255.0f green:217/255.0f blue:217/255.0f alpha:1];
     _tagTextFont = [UIFont systemFontOfSize:14.0];
     
+    _tagStrokeWidth = 1.0f;
     _tagCornerRadius = 10.0f;
     
     JCCollectionViewTagFlowLayout *layout = [[JCCollectionViewTagFlowLayout alloc] init];
@@ -98,6 +100,7 @@ static NSString * const reuseIdentifier = @"tagListViewItemId";
 {
     JCTagCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     cell.backgroundColor = self.tagBackgroundColor;
+    cell.layer.borderWidth = self.tagStrokeWidth;
     cell.layer.borderColor = self.tagStrokeColor.CGColor;
     cell.layer.cornerRadius = self.tagCornerRadius;
     cell.titleLabel.text = self.tags[indexPath.item];
@@ -105,6 +108,7 @@ static NSString * const reuseIdentifier = @"tagListViewItemId";
     cell.titleLabel.font = self.tagTextFont;
     
     if ([self.selectedTags containsObject:self.tags[indexPath.item]]) {
+        cell.layer.borderColor = self.tagSelectedStrokeColor.CGColor;
         cell.backgroundColor = self.tagSelectedBackgroundColor;
         cell.titleLabel.textColor = self.tagSelectedTextColor;
     }
@@ -120,12 +124,14 @@ static NSString * const reuseIdentifier = @"tagListViewItemId";
         if ([self.selectedTags containsObject:self.tags[indexPath.item]]) {
             cell.backgroundColor = self.tagBackgroundColor;
             cell.titleLabel.textColor = self.tagTextColor;
+            cell.layer.borderColor = self.tagStrokeColor.CGColor;
             
             [self.selectedTags removeObject:self.tags[indexPath.item]];
         }
         else {
             cell.backgroundColor = self.tagSelectedBackgroundColor;
             cell.titleLabel.textColor = self.tagSelectedTextColor;
+            cell.layer.borderColor = self.tagSelectedStrokeColor.CGColor;
             
             [self.selectedTags addObject:self.tags[indexPath.item]];
         }
