@@ -50,11 +50,12 @@ static NSString * const reuseIdentifier = @"tagListViewItemId";
     _selectedTags = [NSMutableArray array];
     _tags = [NSMutableArray array];
     
-    _font = [UIFont systemFontOfSize:14.0f];
     _tagStrokeColor = [UIColor lightGrayColor];
     _tagBackgroundColor = [UIColor clearColor];
     _tagTextColor = [UIColor darkGrayColor];
+    _tagSelectedTextColor = [UIColor darkGrayColor];
     _tagSelectedBackgroundColor = [UIColor colorWithRed:217/255.0f green:217/255.0f blue:217/255.0f alpha:1];
+    _tagTextFont = [UIFont systemFontOfSize:14.0];
     
     _tagCornerRadius = 10.0f;
     
@@ -63,6 +64,7 @@ static NSString * const reuseIdentifier = @"tagListViewItemId";
     _collectionView = [[UICollectionView alloc] initWithFrame:self.bounds collectionViewLayout:layout];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
+    _collectionView.scrollEnabled = NO;
     _collectionView.showsHorizontalScrollIndicator = NO;
     _collectionView.showsVerticalScrollIndicator = NO;
     _collectionView.backgroundColor = [UIColor clearColor];
@@ -87,7 +89,7 @@ static NSString * const reuseIdentifier = @"tagListViewItemId";
     JCCollectionViewTagFlowLayout *layout = (JCCollectionViewTagFlowLayout *)collectionView.collectionViewLayout;
     CGSize maxSize = CGSizeMake(collectionView.frame.size.width - layout.sectionInset.left - layout.sectionInset.right, layout.itemSize.height);
     
-    CGRect frame = [self.tags[indexPath.item] boundingRectWithSize:maxSize options:NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _font} context:nil];
+    CGRect frame = [self.tags[indexPath.item] boundingRectWithSize:maxSize options:NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: self.tagTextFont} context:nil];
     
     return CGSizeMake(frame.size.width + 20.0f, layout.itemSize.height);
 }
@@ -100,10 +102,11 @@ static NSString * const reuseIdentifier = @"tagListViewItemId";
     cell.layer.cornerRadius = self.tagCornerRadius;
     cell.titleLabel.text = self.tags[indexPath.item];
     cell.titleLabel.textColor = self.tagTextColor;
-    cell.titleLabel.font = _font;
+    cell.titleLabel.font = self.tagTextFont;
     
     if ([self.selectedTags containsObject:self.tags[indexPath.item]]) {
         cell.backgroundColor = self.tagSelectedBackgroundColor;
+        cell.titleLabel.textColor = self.tagSelectedTextColor;
     }
     
     return cell;
@@ -116,11 +119,13 @@ static NSString * const reuseIdentifier = @"tagListViewItemId";
         
         if ([self.selectedTags containsObject:self.tags[indexPath.item]]) {
             cell.backgroundColor = self.tagBackgroundColor;
+            cell.titleLabel.textColor = self.tagTextColor;
             
             [self.selectedTags removeObject:self.tags[indexPath.item]];
         }
         else {
             cell.backgroundColor = self.tagSelectedBackgroundColor;
+            cell.titleLabel.textColor = self.tagSelectedTextColor;
             
             [self.selectedTags addObject:self.tags[indexPath.item]];
         }
